@@ -3,6 +3,8 @@
 import { getShipmentById } from '@/lib/data';
 import { NextResponse } from 'next/server';
 
+console.log(process.env.SERVICE_ACCOUNT_JSON);
+
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }

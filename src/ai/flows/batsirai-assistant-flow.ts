@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -15,6 +14,20 @@ import { addAuctionItem, addShipment, approveAdmin, getAdmins, getAuctionItems, 
 import { AuctionItem, auctionCategories, Shipment, AdminUser, ShipmentStatus } from '@/lib/types';
 import {z} from 'genkit';
 import { subMonths } from 'date-fns';
+import {Firestore} from '@google-cloud/firestore';
+
+
+// Load service account from environment variable
+const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT_JSON);
+
+// Initialize Firestore
+const firestore = new Firestore({
+  projectId: serviceAccount.project_id,
+  credentials: {
+    client_email: serviceAccount.client_email,
+    private_key: serviceAccount.private_key,
+  },
+});
 
 
 const appDocumentation = `
@@ -357,4 +370,4 @@ const batsiraiFlow = ai.defineFlow(
     return output!;
   }
 );
-  
+
