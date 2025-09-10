@@ -1,0 +1,14 @@
+import { collection, query, where, limit, getDocs } from "firebase/firestore";
+import { db } from "./firebase";
+
+export async function getAdminByEmail(email: string): Promise<AdminUser | undefined> {
+    const q = query(
+        collection(db, ADMIN_COLLECTION),
+        where('email', '==', email.toLowerCase()),
+        limit(1)
+    );
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return undefined;
+    const doc = snapshot.docs[0];
+    // ...rest of your code...
+}

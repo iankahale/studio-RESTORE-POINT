@@ -1,0 +1,187 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 0%;
+ 
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 0 0% 0%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 48 96% 51%;
+    --accent-foreground: 0 0% 0%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+ 
+    --radius: 0.5rem;
+
+    --sidebar-gradient-start: hsl(0 0% 100%);
+    --sidebar-gradient-end: hsl(0 0% 100%);
+
+    /* Static Brand Colors */
+    --brand-blue: 222.2 47.4% 11.2%;
+    --brand-yellow: 37 92% 54%;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+ 
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+ 
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+ 
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --sidebar-gradient-start: hsl(222.2 84% 4.9%);
+    --sidebar-gradient-end: hsl(222.2 84% 8%);
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+}
+
+/* SVG Logo Styling */
+@layer components {
+    /* Light mode: Solid fill */
+    .animated-logo-blue {
+        fill: hsl(var(--brand-blue));
+        stroke: none;
+    }
+
+    .animated-logo-yellow {
+        fill: hsl(var(--brand-yellow));
+        stroke: none;
+    }
+
+    /* Dark mode: Animated stroke */
+    .dark .animated-logo-blue {
+        fill: none;
+        stroke: hsl(var(--primary));
+        stroke-dasharray: 4500;
+        stroke-dashoffset: 4500;
+        animation: draw-blue 3s ease-in-out forwards;
+    }
+
+    .dark .animated-logo-yellow {
+        fill: none;
+        stroke: hsl(var(--brand-yellow));
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: draw-yellow 3s ease-in-out forwards 0.5s;
+    }
+
+    [data-sidebar="sidebar"] {
+        background: linear-gradient(180deg, var(--sidebar-gradient-start) 0%, var(--sidebar-gradient-end) 100%);
+    }
+
+    /* Icon color for light mode */
+    :root [data-sidebar=sidebar] svg {
+        color: hsl(var(--brand-yellow));
+    }
+
+    /* Icon color for dark mode */
+    .dark [data-sidebar=sidebar] svg {
+        color: hsl(var(--primary));
+    }
+
+    :root [data-sidebar="menu-button"]:hover {
+        background-color: hsl(var(--accent));
+        color: hsl(var(--accent-foreground));
+    }
+    
+    :root [data-sidebar="menu-button"]:hover svg {
+        color: hsl(var(--primary-foreground));
+    }
+
+     :root [data-sidebar="menu-button"][data-active="true"] {
+        background-color: hsl(var(--accent));
+        color: hsl(var(--accent-foreground));
+    }
+
+    :root [data-sidebar="menu-button"][data-active="true"] svg {
+        color: hsl(var(--primary-foreground));
+    }
+
+    .dark [data-sidebar="menu-button"]:hover svg,
+    .dark [data-sidebar="menu-button"][data-active="true"] svg {
+        color: hsl(var(--brand-yellow));
+    }
+}
+
+
+@keyframes draw-blue {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes draw-yellow {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes pulse-blue {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+}
+
+.animate-pulse-blue {
+    animation: pulse-blue 2s infinite;
+}
