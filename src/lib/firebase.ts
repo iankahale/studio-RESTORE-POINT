@@ -1,22 +1,26 @@
-import admin from 'firebase-admin';
+import { Firestore } from '@google-cloud/firestore';
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      type: process.env.FIREBASE_TYPE,
-      project_id: process.env.FIREBASE_PROJECT_ID,
-      private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
-      private_key: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      client_email: process.env.FIREBASE_CLIENT_EMAIL,
-      client_id: process.env.FIREBASE_CLIENT_ID,
-      auth_uri: process.env.FIREBASE_AUTH_URI,
-      token_uri: process.env.FIREBASE_TOKEN_URI,
-      auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
-      client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
-    }),
+let cached: Firestore | null = null;
+
+export function getFirestoreInstance(): Firestore {
+  if (cached) return cached;
+
+  const raw = process.env.SERVICE_ACCOUNT_JSON;
+  if (!raw) {
+    throw new Error('Missing SERVICE_ACCOUNT_JSON environment variable');
+  }
+
+  const serviceAccount = typeof raw === 'string' ? JSON.parse(raw) : raw;
+
+  const privateKey = (serviceAccount.private_key || '').replace(/\\n/g, '\n');
+
+  cached = new Firestore({
+    projectId: serviceAccount.project_id,
+    credentials: {
+      client_email: serviceAccount.client_email,
+      private_key: privateKey,
+    },
   });
+
+  return cached;
 }
-
-const db = admin.firestore();
-
-export { db };
